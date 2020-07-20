@@ -17,6 +17,7 @@ use odsPhpGenerator\odsCoveredTableCell;
 use odsPhpGenerator\odsStyleTableColumn;
 use odsPhpGenerator\odsTableColumn;
 use odsPhpGenerator\odsFontFace;
+use odsPhpGenerator\odsTableCellFloat;
 
 // Create Ods object
 $ods  = new ods();
@@ -132,12 +133,41 @@ $row->addCell($cell);
 $cell = new odsTableCellString('身障特考', $style_justify);
 $row->addCell($cell);
 $cell = new odsTableCellString('原住民特考', $style_justify);
-
 $row->addCell($cell);
 $cell = new odsTableCellString('中央機關請辦之特種考試', $style_justify);
 $row->addCell($cell);
 $table->addRow($row);
 
+//start the data 
+$row = new odsTableRow();
+$row->addCell(new odsTableCellFloat(1, $style_justify));
+$row->addCell(new odsTableCellString('教育部', $center_yellow));
+$row->addCell(new odsTableCellFloat(1, $style_center));
+$row->addCell(new odsTableCellFloat(1, $style_center));
+$row->addCell(new odsTableCellFloat(1, $style_center));
+$row->addCell(new odsTableCellFloat(1, $style_center));
+$row->addCell(new odsTableCellFloat(1, $style_center));
+$row->addCell(new odsTableCellFloat(1, $style_center));
+$row->addCell(new odsTableCellFloat(1, $style_center));
+$row->addCell(new odsTableCellFloat(1, $style_center));
+$row->addCell(new odsTableCellFloat(1, $style_center));
+$row->addCell(new odsTableCellFloat(1, $style_center));
+$table->addRow($row);
+
+
+
+$ods->addTable($table);
+$ods->downloadOdsFile("MergeCell.ods");
+
+?>
+
+
+
+
+
+
+
+<?php
 //為了上方必須span但其實下方仍然可以寫入東西，必須用空白將位置真的空出來
 // for($i=0; $i<3; $i++) { // You need add cell odsCoveredTableCell, in covered cell except the first row (implicit)
 //     $row = new odsTableRow();
@@ -161,8 +191,4 @@ $table->addRow($row);
 //     $row->addCell( new odsCoveredTableCell() );
 // }
 // $table->addRow($row);
-
-$ods->addTable($table);
-$ods->downloadOdsFile("MergeCell.ods");
-
 ?>
