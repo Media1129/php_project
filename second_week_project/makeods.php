@@ -99,7 +99,5 @@
 
 
 
-function create_ods($teacher,$subj){
 
-}
 ?>
