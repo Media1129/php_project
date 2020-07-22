@@ -104,51 +104,8 @@ $tb1 = '
   </table>
 ';
 $pdf->writeHTML($tb1, true, false, false, false, '');
-// $tbl = '
-// <br><br><br>
-// <table border="1" cellpadding="2"  align="center">
-// <tr nobr="true">
-//   <th rowspan="2" width="9%"><b>得提列公務人員考試職缺數</b></th>
-//   <th width="76%" colspan="8"><b><font size="18">已提列各種考試職缺數<br>(含申請各類候用人員之職缺)</font></b></th>
-//   <th width="15%"><b>備註（請填提缺<br>數）</b></th>
-// </tr>
-// <tr nobr="true">
-//   <th width="8%">高考<br>1級</th>
-//   <th width="8%">高考<br>2級</th>
-//   <th width="8%">高考<br>3級</th>
-//   <th width="8%">普通<br>考試</th>
-//   <th width="8%">初等<br>考試</th>
-//   <th width="8%">身障<br>特考</th>
-//   <th width="12%">原住民<br>特考</th>
-//   <th width="16%">中央機關請辦之特種考試</th>
-//   <th width="15%">因應行政院組改控管職缺數</th>
-// </tr>
-// <tr nobr="true"> 
-//   <th>'.$_POST["one"].'</th>
-//   <th>'.$_POST["two"].'</th>
-//   <th>'.$_POST["three"].'</th>
-//   <th>'.$_POST["four"].'</th>
-//   <th>'.$_POST["five"].'</th>
-//   <th>'.$_POST["six"].'</th>
-//   <th>'.$_POST["seven"].'</th>
-//   <th>'.$_POST["eight"].'</th>
-//   <th>'.$_POST["nine"].'</th>
-//   <th>'.$_POST["ten"].'</th>
-// </tr>
-// </table>
-// ';
 
-// $pdf->writeHTML($tbl, true, false, false, false, '');
-
-
-// $tbl = '
-// <h4><b><font size="17">請詳閱「注意事項」後再行查填。</font></b></h4>
-// <p><font size="17">機關（構）學校名稱：  '.$_POST['agency'].'</font></p>
-// <p><font size="17">填表人職稱:_____________ 姓名:_____________ </font></p>
-// <p><font size="17">聯絡電話：_____________ </font></p>
-// <p><font size="17">電子郵件信箱：_____________ </font></p>
-// ';
-// $pdf->writeHTML($tbl, true, false, false, false, '');
+$pdf->AddPage();
 
 
 ob_end_clean();
