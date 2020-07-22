@@ -7,7 +7,8 @@
 
 
 <h1>得提列公務人員考試職缺與已提列考試職缺控管表</h1>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+<!-- <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  -->
+<form method="post" action="makepdf.php">   
   <select name="agency">
     <option value="教育部">(001) 教育部</option>
     <option value="教育部國民及學前教育署暨所屬國立學校">(002) 教育部國民及學前教育署暨所屬國立學校</option>
@@ -118,23 +119,23 @@
 <?php
 //insert data into database
 if ($_SERVER["REQUEST_METHOD"] == "POST" and isset($_POST['submit']) ) {
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $dbname = "testdb";
-  $conn = new mysqli($servername, $username, $password, $dbname);
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  }
-  $sql = "UPDATE exam_table INNER JOIN agency_table ON exam_table.id = agency_table.id 
-        SET one = '".$_POST["one"]."',two='".$_POST["two"]."',three='".$_POST["three"]."',four='".$_POST["four"]."',five='".$_POST["five"]."',six='".$_POST["six"]."',seven='".$_POST["seven"]."',eight='".$_POST["eight"]."',nine='".$_POST["nine"]."',ten='".$_POST["ten"]."' WHERE agency_table.agency = '".$_POST['agency']."' ";
+  // $servername = "localhost";
+  // $username = "root";
+  // $password = "";
+  // $dbname = "testdb";
+  // $conn = new mysqli($servername, $username, $password, $dbname);
+  // if ($conn->connect_error) {
+  //   die("Connection failed: " . $conn->connect_error);
+  // }
+  // $sql = "UPDATE exam_table INNER JOIN agency_table ON exam_table.id = agency_table.id 
+  //       SET one = '".$_POST["one"]."',two='".$_POST["two"]."',three='".$_POST["three"]."',four='".$_POST["four"]."',five='".$_POST["five"]."',six='".$_POST["six"]."',seven='".$_POST["seven"]."',eight='".$_POST["eight"]."',nine='".$_POST["nine"]."',ten='".$_POST["ten"]."' WHERE agency_table.agency = '".$_POST['agency']."' ";
 
-  if ($conn->query($sql) === TRUE) {
-    echo "update successfully";
-  } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
-  }
-  $conn->close();
+  // if ($conn->query($sql) === TRUE) {
+  //   echo "update successfully";
+  // } else {
+  //   echo "Error: " . $sql . "<br>" . $conn->error;
+  // }
+  // $conn->close();
 
 }
 
