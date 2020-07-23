@@ -275,27 +275,27 @@ $tb1 = '
     </tr>
     <tr nobr="true">
       <th rowspan="6"><br><br><br><br><font style="text-align:left">諮詢服務的評估</font></th>
-      <th><font style="text-align:left">1.本次服務類型</font></th>
+      <th><font style="text-align:left"> 1.本次服務類型</font></th>
       <th><font style="text-align:left"> &emsp;人事單位主動安排 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;教職員自行尋求諮詢</font></th>
     </tr>
     <tr nobr="true">
-      <th><font style="text-align:left">2.諮詢服務的方<br> 式</font></th>
+      <th><font style="text-align:left"> 2.諮詢服務的方<br> &emsp;式</font></th>
       <th><font style="text-align:left"> &emsp;面對面 &emsp;&emsp;&emsp;&emsp;電話 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;電子郵件 &emsp;&emsp;&emsp;&emsp;&emsp;其他</font></th>
     </tr>
     <tr nobr="true">
-      <th><font style="text-align:left">3.諮詢服務使用<br> 時間</font></th>
+      <th><font style="text-align:left"> 3.諮詢服務使用<br> &emsp;時間</font></th>
       <th><font style="text-align:left"> &emsp;1小時以上 &emsp;&emsp;&emsp;30分鐘~1小時 &emsp;&emsp;&emsp;30分鐘以下</font></th>
     </tr>
     <tr nobr="true">
-      <th><font style="text-align:left">4.學校教職員詢問的內容均能當場給予明確答覆</font></th>
+      <th><font style="text-align:left"> 4.學校教職員詢<br> &ensp;問的內容均能<br> &emsp;當場給予明確<br> &emsp;答覆</font></th>
       <th><font style="text-align:left"> &emsp;是<br> &emsp;否： &emsp;絕大部分仍會確認後再予回復<br> &emsp;&emsp;&emsp;&emsp;仍需教職員提供具體資料才能確定<br> &emsp;&emsp;&emsp;&emsp;涉及未來制度或管理規劃，難以明確說明（請將意見填列於「教職員建議事項」相關）</font></th>
     </tr>
     <tr nobr="true">
-      <th><font style="text-align:left">5.教職員對於諮詢服務的反應</font></th>
+      <th><font style="text-align:left"> 5.教職員對於諮<br> &emsp;詢服務的反應</font></th>
       <th><font style="text-align:left"> &emsp;&emsp;&emsp;分（最高10分，以教職員非常不滿意（不能接受）為1分，非常滿意（肯定服務效益）為10分覈實<br> &emsp;&emsp;&emsp;&emsp;&emsp;評分計給）</font></th>
     </tr>
     <tr nobr="true">
-      <th><font style="text-align:left">6.安排下一次諮詢服務</font></th>
+      <th><font style="text-align:left"> 6.安排下一次諮<br> &emsp;詢服務</font></th>
       <th><font style="text-align:left"> &emsp;有： &emsp;&emsp;&emsp;面對面 &emsp;&emsp;&emsp;&emsp;電話 &emsp;&emsp;&emsp;&emsp;電子郵件<br> &emsp;無</font></th>
     </tr>
   </table>
