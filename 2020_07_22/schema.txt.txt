@@ -1,0 +1,97 @@
+CREATE TABLE rep009(
+  times_id	    serial		   NOT NULL, -- 流水號
+  user_id	      varchar(20)	 NOT NULL, --	填表人帳號
+  cpa_code	    varchar(20)  NOT NULL, --填報機關
+  cpa_name      varchar(150) NOT NULL, --填報機關名稱
+  cpa_group     int       NOT NULL,   -- 機關群組(0:不區分 1:大專機關；2:國教署;3:附屬機關)
+  psn_sex	    char(1)	     NOT NULL, --	被訪問人員性別(0:女 1:男)
+  psn_name      varchar(20)  NOT NULL, -- 被訪問人員姓名
+  q_year	    integer	     NOT NULL, --咨詢日期(年)
+  q_month	    integer	     NOT NULL, --咨詢日期(月)
+  q_day	    	integer	     NOT NULL, --咨詢日期(日)
+  q01	        varchar(2)	 NOT NULL, --服務機構
+  q02	        varchar(2)	 NOT NULL, -- 身分別(一)
+  q03	        varchar(2)	 NOT NULL, -- 身分別(二)
+  q03_2	        varchar(2)			     , -- 身分別(二)(第二層)
+  q03_2other	varchar(200)		     , -- 身分別(二) (第二層)99.其他____
+  q03_3	        varchar(2)			     , -- 1.借調(細項)
+  q03_3other	varchar(200)		     , -- 1.借調(99其他____)
+  q04	        varchar(2)	 NOT NULL, --	專上學校或機構職稱(級)
+  q05	        varchar(2)	 NOT NULL, --	兼任行政職務
+  q06	        varchar(30)	         , --	特殊身分(無)
+  q06_1         char(1)              , --	特殊身分(身障)
+  q06_2         char(1)              , --	特殊身分(原住民族)  
+  q06_3         char(1)              , --	特殊身分(體能降齡)
+  q06_4         char(1)              , --	特殊身分(具永久居留證外籍教師)
+  q06_5         char(1)              , --	特殊身分(未具永久居留證外籍教師)
+  q07_be_year	  varchar(3)		       , -- 退撫新制實施前：年
+  q07_be_month	varchar(2)		       , -- 退撫新制實施前：月
+  q07_af_year	  varchar(3)		       , -- 退撫新制實施後：年
+  q07_af_month	varchar(2)		       , -- 退撫新制實施後：月
+  q07_be_syear   varchar(3)          , -- 私校儲金制前：年
+  q07_be_smonth  varchar(2)          , -- 私校儲金制前：月
+  q07_af_syear   varchar(3)          , -- 私校儲金制後：年
+  q07_af_smonth  varchar(2)          , -- 私校儲金制後：月
+  q08	          varchar(2)	 NOT NULL, --	預計退休日期(選項)
+  q08_year      integer              , --咨詢日期(年)
+  q08_month     integer              , --咨詢日期(月)
+  q08_day       integer              , --咨詢日期(日)  
+  q09	        varchar(2)	           , --	諮詢類型及目的(提報退休案)  
+  q09_1	        char(1)	               , --	諮詢類型及目的(制度了解或建議)
+  q09_2	        char(1)	               , --	諮詢類型及目的(退休規劃準備)
+  q09_3	        char(1)	               , --	諮詢類型及目的(退撫基金繳付)
+  q09_4	        char(1)	               , --	諮詢類型及目的(退休年資)
+  q09_5	        char(1)	               , --	諮詢類型及目的(其他)
+  q09_other    varchar(200)            , -- 諮詢類型及目的(其他內容)
+  q10	        varchar(2)	           , --	退休類型及條件(退休類型（自願、屆齡、命退）)
+  q10_1	        char(1)	               , --	退休類型及條件(可退休年齡)
+  q10_2	        char(1)	               , --	退休類型及條件(退休年資採計)
+  q10_3	        char(1)	               , --	退休類型及條件(月退休金起支年齡)
+  q10_4	        char(1)	               , --	退休類型及條件(延長服務)  
+  q11	        char(1)	               , --	退休給與(退休金種類（一次、月退、兼領）
+  q11_1	        char(1)	               , --	退休給與(退休金停領與恢復及剝奪、減少)
+  q11_2	        char(1)	               , --	退休給與(退休金計算基準)
+  q11_3	        char(1)	               , --	退休給與(人道關懷條款)
+  q11_4	        char(1)	               , --	退休給與(所得替代率)
+  q11_5	        char(1)	               , --	退休給與(最低保障關懷)
+  q11_6	        char(1)	               , --	退休給與(退休再任)
+  q11_7	        char(1)	               , --	退休給與(退休金發放、查驗)
+  q11_8	        char(1)	               , --	退休給與(優惠存款)
+  q11_9	        char(1)	               , --	退休給與(補償金)
+  q11_99	    char(1)	               , --	退休給與(其他)
+  q11_other	    varchar(200)		   , -- 退休給與_其他____
+  q12	        char(1)	               , --	其他-年資轉銜（年資併計、年資保留）  
+  q12_1         char(1)	               , --	其他-離婚配偶請求
+  q12_2         char(1)	               , --	其他-免受第37條及第38條限制之條件
+  q12_3         char(1)	               , --	其他-試算退休金
+  q12_99        char(1)	               , --	其他-其他
+  q12_other     varchar(200)         , --   其他，其他_____
+  q13	        varchar(2)	 NOT NULL, --	對教職員提供退休規劃建議
+  q13_other	    lvarchar(1500)			 , -- 建議_________
+  q14_1	        lvarchar(1500)			 , -- 教職員提出的建議事項(退休制度規畫面)
+  q14_2	        lvarchar(1500)			 , -- 教職員提出的建議事項(服務提供及管理)
+  q14_3	        lvarchar(1500)			 , -- 教職員提出的建議事項(其他)
+  q15	        varchar(2)	 NOT NULL, --	1.本次服務型態
+  q16	        char(1)	 				, --	2.諮詢服務的方式
+  q16_1	        char(1)	 				, --	2.諮詢服務的方式
+  q16_2	        char(1)	 				, --	2.諮詢服務的方式
+  q16_99        char(1)	 				, --	2.諮詢服務的方式
+  q16_other     varchar(200)         , --   諮詢服務的方式，其他_____
+  q17	        varchar(2)	 NOT NULL, --	3.諮詢服務使用時間
+  q18	        varchar(2)	 NOT NULL, --	4.學校教職員詢問的內容均能當場給予明確答覆
+  q18_2	        varchar(2)		       , -- q18(否細項)
+  q19	        varchar(2)	 NOT NULL, --	5.教職員對於諮詢服務的反應(最高10分)
+  q20	        varchar(2)	 NOT NULL, --	6.安排下一次諮詢服務
+  q20_1	        char(1)			     , -- q20(有：細項)
+  q20_2	        char(1)			     , -- q20(有：細項)
+  q20_3	        char(1)			     , -- q20(有：細項)
+  is_send	    char(1)		   NOT NULL, --	是否送出(0:未送出 1:已送出)
+  inp_cpa_name  varchar(255)           , -- 填表機關名稱
+  inp_user_name varchar(255)           , -- 填表人員名稱
+  inp_user_tel  varchar(20)            , -- 填表人員電話
+  inp_user_mail varchar(120)           , -- 填表人員email
+  update_date   integer              , -- 更新日期
+  update_time   varchar(20)          , -- 更新時間
+  update_ip	    varchar(2)			       -- 更新者IP
+)EXTENT SIZE 1024 NEXT SIZE 1024 LOCK MODE ROW;
+CREATE UNIQUE INDEX index_rep009 ON rep009(times_id);
