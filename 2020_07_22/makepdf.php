@@ -71,9 +71,9 @@ $pdf->writeHTML($tbl, true, false, false, false, '');
 //line
 $pdf->Line(210, 39.9, 273.5, 39.9);
 $pdf->Line(172, 71.5,210, 71.5);
-$pdf->Line(106, 104,130, 104);
-$pdf->Line(171, 104,198, 104);
-$pdf->Line(232, 104,260, 104);
+$pdf->Line(105, 104,129, 104);
+$pdf->Line(165, 104,195, 104);
+$pdf->Line(226, 104,257, 104);
 $pdf->Line(89, 115.7,130, 115.7);
 $pdf->Line(251, 122,270, 122);
 $pdf->Line(85, 167,120, 167);
@@ -177,6 +177,8 @@ $pdf->Rect(71.7, 170.1, 3.8, 3.8, 3.5, 'DF'); //年資轉銜
 $pdf->Rect(161, 170.1, 3.8, 3.8, 3.5, 'DF'); //離婚配偶請求
 $pdf->Rect(205.4, 170.1, 3.8, 3.8, 3.5, 'DF'); //免受第37條及第38條限制之條件
 
+//declare other variable
+
 
 //psn_sex
 if( $code_list['psn_sex'][$data['psn_sex']] =='男'){
@@ -220,6 +222,7 @@ else{
 }
 
 //q_03
+$q03_2_other = "";
 if( $data['q03'] == '0' ){ //現職
   $pdf->Rect(71.7, 62.3, 3.8, 3.8, 'DF'); //現職
 }
@@ -258,6 +261,7 @@ else { //留停
   }
   else { //其他
     $pdf->Rect(158.3, 67.7, 3.8, 3.8, 'DF'); //其他
+    $q03_2_other = ConvertToUTF8($data['q03_2other']);
   }
 }
 
@@ -303,17 +307,29 @@ if( $data['q06_4']=='Y'){
 if( $data['q06_5']=='Y'){
   $pdf->Rect(208.3, 93.1, 3.8, 3.8, 'DF'); //未具永久
 }
+//q07 total year and total month
+$q07_year_total = (int)$data["q07_be_year"]+(int)$data["q07_af_year"];
+$q07_month_total = (int)$data["q07_be_month"]+(int)$data["q07_af_month"];
+if($q07_month_total>=12){
+  $q07_year_total+=1;
+  $q07_month_total-=12;
+}
+$q08_year = $q08_month = $q08_day = "";
 //q08
 if( $data['q08']=='0'){
   $pdf->Rect(160.5, 111.7, 3.8, 3.8, 'DF'); //尚未確定
 }
 else if( $data['q08']=='1'){
   $pdf->Rect(71.7, 111.7, 3.8, 3.8, 'DF'); //已確定
+  $q08_year = $data["q08_year"];
+  $q08_month = $data["q08_month"];
+  $q08_day = $data["q08_day"];
 }
 else{
   $pdf->Rect(212.3, 111.7, 3.8, 3.8, 'DF'); //其他
 }
 //q09
+$q09_other = "";
 if( $data['q09']=='Y'){
   $pdf->Rect(71.7, 118.4, 3.8, 3.8, 'DF'); //提報退休案
 }
@@ -331,6 +347,7 @@ if( $data['q09_4']=='Y'){
 }
 if( $data['q09_5']=='Y'){
   $pdf->Rect(238, 118.4, 3.8, 3.8, 'DF'); //其他 
+  $q09_other = ConvertToUTF8($data["q09_other"]);
 }
 //q10
 if( $data['q10']=='Y'){
@@ -349,6 +366,7 @@ if( $data['q10_4']=='Y'){
   $pdf->Rect(160.5, 130.7, 3.8, 3.8, 'DF'); //延長服務
 }
 //q11
+$q11_other = "";
 if( $data['q11']=='Y'){
   $pdf->Rect(71.7, 137.2, 3.8, 3.8, 'DF'); //退休金種類
 }
@@ -381,6 +399,7 @@ if( $data['q11_9']=='Y'){
 }
 if( $data['q11_99']=='Y'){
   $pdf->Rect(71.7, 163.7, 3.8, 3.8, 'DF'); //其他
+  $q11_other = ConvertToUTF8($data["q11_other"]);
 }
 //q12
 if( $data['q12']=='Y'){
@@ -409,7 +428,7 @@ $tb1 = '
       <th width="5%">性別:</th>
       <th width="18%"><font style="text-align:left"> &emsp;&emsp;男 &emsp;&emsp;女</font></th>
       <th width="15%"><font style="text-align:left"> &nbsp;諮詢日期:</font></th>
-      <th width="22%"><font style="text-align:left"> &emsp;&emsp;&emsp;&emsp;年 &emsp;&emsp;月 &emsp;&emsp;日</font></th>
+      <th width="22%"><font style="text-align:left"> &emsp;&emsp;'.ConvertToUTF8($data["q_year"]).'年 &emsp;'.ConvertToUTF8($data["q_month"]).'月 &emsp;'.ConvertToUTF8($data["q_day"]).'日</font></th>
     </tr>
     
     <tr nobr="true">
@@ -423,7 +442,7 @@ $tb1 = '
     <tr nobr="true">
       <th><font style="text-align:left">身分別（二）</font></th>
       <th colspan="5"><font style="text-align:left"> &emsp;現職 &ensp;&emsp;&emsp;留停：1. &emsp;借調( &emsp;民營事業 &ensp;&emsp;財團法人 &ensp;&emsp;行政法人 &ensp;&emsp;政府機關(構) &ensp;&emsp;民間 &ensp;其他)<br> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 2. &emsp;育嬰；3. &emsp;侍親；4.
-       &emsp; 其他</font></th>
+       &emsp; 其他 &emsp;'.ConvertToUTF8($q03_2_other).'</font></th>
     </tr>
     <tr nobr="true">
       <th><font style="text-align:left">專上學校或機構職稱（級）</font></th>
@@ -439,17 +458,17 @@ $tb1 = '
     </tr>
     <tr nobr="true">
       <th><font style="text-align:left">任職年資<br>（截至諮詢日）</font></th>
-      <th colspan="5" ><font style="text-align:left">退撫新制實施前： &emsp;&ensp;年 &emsp;&ensp;月、退撫新制實施後： &emsp;&ensp;年 &emsp;&ensp;月 &emsp;&emsp;；&emsp;&emsp;合計： &emsp;&ensp;年 &emsp;&ensp;月</font></th>
+      <th colspan="5" ><font style="text-align:left">退撫新制實施前： &emsp;'.ConvertToUTF8($data["q07_be_year"]).'年 &emsp;'.ConvertToUTF8($data["q07_be_month"]).'月、退撫新制實施後： &emsp;'.ConvertToUTF8($data["q07_af_year"]).'年 &emsp;'.ConvertToUTF8($data["q07_af_month"]).'月 &emsp;&emsp;；&emsp;&emsp;合計： &emsp;'.$q07_year_total.'年 &ensp;'.$q07_month_total.'月</font></th>
     </tr>
     <tr nobr="true">
       <th><font style="text-align:left">預計退休日期</font></th>
-      <th colspan="5"><font style="text-align:left"> &emsp;已確定 &emsp;&emsp;年 &emsp;&emsp;月 &emsp;&emsp;日 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;尚未確定 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;其他</font></th>
+      <th colspan="5"><font style="text-align:left"> &emsp;已確定 &emsp;'.$q08_year.'年 &emsp;'.$q08_month.'月 &emsp;'.$q08_day.'日 &ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;尚未確定 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;其他</font></th>
     </tr>
 
     <tr nobr="true">
       <th width="7%" rowspan="4"><br><br><br><br><br><br><font style="text-align:left">諮詢服務內容</font></th>
       <th width="13%"><font style="text-align:left">諮詢類型及目的</font></th>
-      <th width="75%"><font style="text-align:left"> &emsp;提報退休案 &emsp;&emsp;制度瞭解或建議 &emsp;&emsp;退休規劃準備 &emsp;&emsp;退撫基金繳付 &emsp;&emsp;退休年資 &emsp;&emsp;其他</font></th>
+      <th width="75%"><font style="text-align:left"> &emsp;提報退休案 &emsp;&emsp;制度瞭解或建議 &emsp;&emsp;退休規劃準備 &emsp;&emsp;退撫基金繳付 &emsp;&emsp;退休年資 &emsp;&emsp;其他 '.$q09_other.'</font></th>
     </tr>
     <tr nobr="true">
       <th><font style="text-align:left">退休類型及條件</font></th>
@@ -457,7 +476,7 @@ $tb1 = '
     </tr>
     <tr nobr="true">
       <th><br><br><br><br><font style="text-align:left">退休給與</font></th>
-      <th><font style="text-align:left"> &emsp;退休金種類（一次、月退、兼領） &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;退休金停領與恢復及剝奪、減少<br> &emsp;退休金計算基準 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;人道關懷條款<br> &emsp;所得替代率 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;最低保障規範<br> &emsp;退休再任 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;退休金發放、查驗<br> &emsp;優惠存款 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;補償金<br> &emsp;其他</font></th>
+      <th><font style="text-align:left"> &emsp;退休金種類（一次、月退、兼領） &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;退休金停領與恢復及剝奪、減少<br> &emsp;退休金計算基準 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;人道關懷條款<br> &emsp;所得替代率 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;最低保障規範<br> &emsp;退休再任 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;退休金發放、查驗<br> &emsp;優惠存款 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;補償金<br> &emsp;其他 &emsp;'.$q11_other.'</font></th>
     </tr>
     <tr nobr="true">
       <th><font style="text-align:left">其他</font></th>
@@ -481,6 +500,9 @@ $pdf->Line(83, 38, 270, 38);
 $pdf->Line(198, 71.7, 220, 71.7);
 $pdf->Line(71, 118, 83, 118);
 $pdf->Line(201, 180, 267, 180);
+
+$pdf->Line(63.5, 153.7, 115, 153.7);
+$pdf->Line(69, 170, 72.5, 170);
 
 
 //q12 continue
@@ -516,19 +538,24 @@ $pdf->Rect(71.7, 131.7, 3.8, 3.8, 3.5, 'DF'); //無
 
 
 //q12 continue
+$q12_other = "";
 if($data['q12_3']=='Y'){
   $pdf->Rect(71.7, 22, 3.8, 3.8, 'DF'); //試算退休金
 }
 if($data['q12_99']=='Y'){
   $pdf->Rect(161.5, 22, 3.8, 3.8, 'DF'); //其他
+  $q12_other = ConvertToUTF8($data["q12_other"]);
 }
 //q13
+$q13_other = "";
 if($data['q13']=='0'){
   $pdf->Rect(71.7, 28.9, 3.8, 3.8, 'DF'); //無
 }
 else{
   $pdf->Rect(71.7, 34.2, 3.8, 3.8, 'DF'); //有
+  $q13_other = ConvertToUTF8($data["q13_other"]);
 }
+
 //q15
 if($data['q15']=='0'){
   $pdf->Rect(71.7, 61.1, 3.8, 3.8, 'DF'); //人事單位主動安排
@@ -537,6 +564,7 @@ else{
   $pdf->Rect(144.4, 61.1, 3.8, 3.8, 'DF'); //教職員自行尋求諮詢
 }
 //q16
+$q16_other = "";
 if($data['q16']=='Y'){
   $pdf->Rect(71.7, 67.8, 3.8, 3.8, 'DF'); //面對面
 }
@@ -548,6 +576,7 @@ if($data['q16_2']=='Y'){
 }
 if($data['q16_99']=='Y'){
   $pdf->Rect(185, 67.8, 3.8, 3.8, 'DF'); //其他
+  $q16_other = ConvertToUTF8($data["q16_other"]);
 }
 //q17
 if($data['q17']=='0'){
@@ -605,21 +634,21 @@ $tb1 = '
     <tr nobr="true">
       <th width="7%"></th>
       <th width="13%"></th>
-      <th width="75%"><font style="text-align:left"> &emsp;試算退休金所得替代率 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;其他</font></th>
+      <th width="75%"><font style="text-align:left"> &emsp;試算退休金所得替代率 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;其他 &emsp;'.$q12_other.'</font></th>
     </tr>
     <tr nobr="true">
       <th colspan="2"><font style="text-align:left">對教職員提供退休規畫建議</font></th>
-      <th><font style="text-align:left"> &emsp;無（僅係提供法令規範之諮詢及解釋）<br> &emsp;有：</font></th>
+      <th><font style="text-align:left"> &emsp;無（僅係提供法令規範之諮詢及解釋）<br> &emsp;有： &emsp;'.$q13_other.'</font></th>
     </tr>
     <tr nobr="true">
       <th colspan="2" rowspan="3"><br><br><font style="text-align:left">教職員提出的建議事項</font></th>
-      <th><font style="text-align:left">退休制度規範面</font></th>
+      <th><font style="text-align:left">退休制度規範面： &emsp;'.ConvertToUTF8($data["q14_1"]).'</font></th>
     </tr>
     <tr nobr="true">
-      <th><font style="text-align:left">服務提供及管理</font></th>
+      <th><font style="text-align:left">服務提供及管理： &emsp;'.ConvertToUTF8($data["q14_2"]).'</font></th>
     </tr>
     <tr nobr="true">
-      <th><font style="text-align:left">其他</font></th>
+      <th><font style="text-align:left">其他： &emsp;'.ConvertToUTF8($data["q14_3"]).'</font></th>
     </tr>
     <tr nobr="true">
       <th rowspan="6"><br><br><br><br><font style="text-align:left">諮詢服務的評估</font></th>
@@ -628,7 +657,7 @@ $tb1 = '
     </tr>
     <tr nobr="true">
       <th><font style="text-align:left"> 2.諮詢服務的方<br> &emsp;式</font></th>
-      <th><font style="text-align:left"> &emsp;面對面 &emsp;&emsp;&emsp;&emsp;電話 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;電子郵件 &emsp;&emsp;&emsp;&emsp;&emsp;其他</font></th>
+      <th><font style="text-align:left"> &emsp;面對面 &emsp;&emsp;&emsp;&emsp;電話 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;電子郵件 &emsp;&emsp;&emsp;&emsp;&emsp;其他 &emsp;'.$q16_other.'</font></th>
     </tr>
     <tr nobr="true">
       <th><font style="text-align:left"> 3.諮詢服務使用<br> &emsp;時間</font></th>
@@ -650,11 +679,11 @@ $tb1 = '
 ';
 $pdf->writeHTML($tb1,true,false,false,false,'');
 $tbl = '
-<p><font size="12"> &emsp;※備註：<br> &emsp;1.本表應於提供服務後，由提供諮詢服務者自行記錄，不得由被服務者記錄填寫。<br>
- &emsp;2.提供諮詢服務前，應先向教職員說明所反應之意見將摘要記錄，並僅作為後續制度或實務改善之參考分析，絕不另作其他用途使用。<br>
- &emsp;3.本表僅諮詢服務對象係依「公立學校教職員退休資遣撫卹條例」辦理退休者適用之。<br>
- &emsp;4.為利後續統計分析用，請勿任意更改本表內容及順序。<br><br>
- &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;提供諮詢服務者：'.ConvertToUTF8($data["psn_name"]).'</font></p>
+<font> &emsp;※備註：<br> &emsp;1.</font><font >本表應於提供服務後，</font><font color="red">由提供諮詢服務者自行記錄</font><font size="12">，不得由被服務者記錄填寫。</font><font><br>
+ &emsp;2.</font><font >提供諮詢服務前，應先向教職員說明所反應之意見將摘要記錄，並僅作為後續制度或實務改善之參考分析，絕不另作其他用途使用。</font><font><br>
+ &emsp;3.</font><font color="red">本表僅諮詢服務對象係依「公立學校教職員退休資遣撫卹條例」辦理退休者適用之。</font><font><br>
+ &emsp;4.</font><font color="red">為利後續統計分析用，請勿任意更改本表內容及順序。</font><font><br><br>
+ &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;提供諮詢服務者：'.ConvertToUTF8($data["psn_name"]).'</font>
 ';
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
