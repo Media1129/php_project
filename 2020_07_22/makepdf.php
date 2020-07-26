@@ -1,8 +1,30 @@
 <?php
 
-// Include the main TCPDF library (search for installation path).
+// Include the main TCPDF library
 require('../.././tcpdf_lib/tcpdf.php'); 
 ob_start();
+//read the data.csv to test the database
+$filename = 'data.csv';
+$data='';
+if (($h = fopen("{$filename}", "r")) !== FALSE) 
+{
+  $row_num = 1;
+  while (($line = fgetcsv($h, 1000, ",")) !== FALSE) 
+  {
+    if($row_num == 1) {
+      $first_line = $line;
+      // $row_num++;
+    }
+    else if($row_num==14){
+      // $row_num++;
+      $data = array_combine($first_line,$line);
+      // print_r($data['times_id']);
+      break;
+    }
+    $row_num++;
+  }
+}
+//mapping query reference
 $code_list=array(		
   'psn_sex'=>array('0'=>'女','1'=>'男'),
   'q01'=>array('0'=>'專科以上學校', '1'=>'高中（職）', '2'=>'國中', '3'=>'國小', '4'=>'社會教育機構', '5'=>'學術研究機構'),
@@ -23,6 +45,11 @@ $code_list=array(
   'is_send'=>array('0'=>'未送出','1'=>'已送出')
 );
 
+
+
+
+
+//convert the chinese word
 function ConvertToUTF8($text){
   $encoding = mb_detect_encoding($text, mb_detect_order(), false);
   if($encoding == "UTF-8")
@@ -38,67 +65,33 @@ function ConvertToUTF8($text){
 
 // create new PDF document
 $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-
-
+//set up the pdf environment
 $pdf->setPrintHeader(false);
 $pdf->setPrintFooter(false);
-
-// set default monospaced font
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-
 $pdf->SetFont('msungstdlight', '', 12);
 $pdf->AddPage();
 
+
+//the title
 $tbl = '
 <br><br>
 <h4 style="font-weight: normal; text-align: center;"><b><font size="14">提供教職員退休規劃諮詢服務紀錄表</font></b></h4>
 ';
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
-// $pdf->RoundedRect(5, 10, 40, 30, 3.50, 'DF');
-// $pdf->RoundedRect(50, 10, 40, 30, 6.50, '1000');
 
-// $style3 = array('color' => array(1, 1,123));
-// $style4 = array('L' => 0,
-//                 'T' => array('width' => 0.25, 'cap' => 'butt', 'join' => 'miter', 'dash' => '20,10', 'phase' => 10, 'color' => array(100, 100, 255)),
-//                 'R' => array('width' => 0.50, 'cap' => 'round', 'join' => 'miter', 'dash' => 0, 'color' => array(50, 50, 127)),
-//                 'B' => array('width' => 0.75, 'cap' => 'square', 'join' => 'miter', 'dash' => '30,10,5,10'));
-// $pdf->Rect(145, 10, 40, 20, 'D', array('all' => $style3));
-// $pdf->Rect(130, 42.5, 3.8, 3.8, 'DF');
-
-//line
+//draw the line
 $pdf->Line(210, 39.9, 273.5, 39.9);
 $pdf->Line(172, 71.5,210, 71.5);
-$pdf->Line(105, 104,129, 104);
-$pdf->Line(165, 104,195, 104);
-$pdf->Line(226, 104,257, 104);
-$pdf->Line(89, 115.7,130, 115.7);
+$pdf->Line(105, 104,132, 104);
+$pdf->Line(170, 104,199, 104);
+$pdf->Line(232, 104,257, 104);
+$pdf->Line(89, 115.7,136, 115.7);
 $pdf->Line(251, 122,270, 122);
 $pdf->Line(85, 167,120, 167);
 
-$filename = 'test.csv';
-$data='';
-if (($h = fopen("{$filename}", "r")) !== FALSE) 
-{
-  $row_num = 1;
-  while (($line = fgetcsv($h, 1000, ",")) !== FALSE) 
-  {
-    if($row_num == 1) {
-      $first_line = $line;
-      $row_num++;
-    }
-    else{
-      $row_num++;
-      $data = array_combine($first_line,$line);
-      // print_r($data['times_id']);
-      break;
-    }
-  }
-}
-
-
+//draw the rectangle
 //psn_sex
 $pdf->Rect(130, 42.5, 3.8, 3.8, 3.5,'DF'); //男
 $pdf->Rect(143, 42.5, 3.8, 3.8, 3.5, 'DF'); //女
@@ -314,16 +307,20 @@ if($q07_month_total>=12){
   $q07_year_total+=1;
   $q07_month_total-=12;
 }
-$q08_year = $q08_month = $q08_day = "";
+$q07_year_total = sprintf("%2s",$q07_year_total);
+$q07_month_total = sprintf("%2s",$q07_month_total);
 //q08
+$q08_year = "&emsp;";
+$q08_month = $q08_day = "&emsp;";
+
 if( $data['q08']=='0'){
   $pdf->Rect(160.5, 111.7, 3.8, 3.8, 'DF'); //尚未確定
 }
 else if( $data['q08']=='1'){
   $pdf->Rect(71.7, 111.7, 3.8, 3.8, 'DF'); //已確定
-  $q08_year = $data["q08_year"];
-  $q08_month = $data["q08_month"];
-  $q08_day = $data["q08_day"];
+  $q08_year = sprintf("%3s",$data["q08_year"]);
+  $q08_month = sprintf("%2s",$data["q08_month"]);
+  $q08_day = sprintf("%2s",$data["q08_day"]);
 }
 else{
   $pdf->Rect(212.3, 111.7, 3.8, 3.8, 'DF'); //其他
@@ -415,10 +412,10 @@ if( $data['q12_2']=='Y'){
 
 
 
-
+//first page
 $tb1 = '
   <br><br>
-  <font size="12"> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;機關（構）學校名稱：'.ConvertToUTF8($data["cpa_name"]).'</font>
+  <font size="12"> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;機關（構）學校名稱： &emsp;'.ConvertToUTF8($data["cpa_name"]).'</font>
   <br>
   <table border="1" cellpadding="2"  align="center" >
     <tr nobr="true">
@@ -458,11 +455,11 @@ $tb1 = '
     </tr>
     <tr nobr="true">
       <th><font style="text-align:left">任職年資<br>（截至諮詢日）</font></th>
-      <th colspan="5" ><font style="text-align:left">退撫新制實施前： &emsp;'.ConvertToUTF8($data["q07_be_year"]).'年 &emsp;'.ConvertToUTF8($data["q07_be_month"]).'月、退撫新制實施後： &emsp;'.ConvertToUTF8($data["q07_af_year"]).'年 &emsp;'.ConvertToUTF8($data["q07_af_month"]).'月 &emsp;&emsp;；&emsp;&emsp;合計： &emsp;'.$q07_year_total.'年 &ensp;'.$q07_month_total.'月</font></th>
+      <th colspan="5" ><font style="text-align:left">退撫新制實施前： &emsp;'.sprintf("%2s",ConvertToUTF8($data["q07_be_year"])).'年 &emsp;'.sprintf("%2s",ConvertToUTF8($data["q07_be_month"])).'月、退撫新制實施後： &emsp;'.sprintf("%2s",ConvertToUTF8($data["q07_af_year"])).'年 &emsp;'.sprintf("%2s",ConvertToUTF8($data["q07_af_month"])).'月 &emsp;&emsp;；&emsp;&emsp;合計： &emsp;'.$q07_year_total.'年 &ensp;'.$q07_month_total.'月</font></th>
     </tr>
     <tr nobr="true">
       <th><font style="text-align:left">預計退休日期</font></th>
-      <th colspan="5"><font style="text-align:left"> &emsp;已確定 &emsp;'.$q08_year.'年 &emsp;'.$q08_month.'月 &emsp;'.$q08_day.'日 &ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;尚未確定 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;其他</font></th>
+      <th colspan="5"><font style="text-align:left"> &emsp;已確定 &emsp;'.$q08_year.'年 &emsp;'.$q08_month.'月 &emsp;'.$q08_day.'日 &ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 尚未確定 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;其他</font></th>
     </tr>
 
     <tr nobr="true">
@@ -494,17 +491,16 @@ $pdf->writeHTML($tb1, true, false, false, false, '');
 //second page
 $pdf->AddPage();
 
-//line
+//draw the line
 $pdf->Line(175, 26, 200, 26);
 $pdf->Line(83, 38, 270, 38);
 $pdf->Line(198, 71.7, 220, 71.7);
 $pdf->Line(71, 118, 83, 118);
 $pdf->Line(201, 180, 267, 180);
-
 $pdf->Line(63.5, 153.7, 115, 153.7);
 $pdf->Line(69, 170, 72.5, 170);
 
-
+//draw the rectangle
 //q12 continue
 $pdf->Rect(71.7, 22, 3.8, 3.8, 3.5, 'DF'); //試算退休金
 $pdf->Rect(161.5, 22, 3.8, 3.8, 3.5, 'DF'); //其他
@@ -607,9 +603,6 @@ else{
 //q20
 if($data['q20']=='1'){
   $pdf->Rect(71.7, 126.4, 3.8, 3.8, 'DF'); //有
-}
-else{
-  $pdf->Rect(71.7, 131.7, 3.8, 3.8, 'DF'); //無
   if($data['q20_1']=='Y'){
     $pdf->Rect(93.8, 126.4, 3.8, 3.8, 'DF'); //面對面
   }
@@ -620,14 +613,13 @@ else{
     $pdf->Rect(151, 126.4, 3.8, 3.8, 'DF'); //電子郵件
   }
 }
+else{
+  $pdf->Rect(71.7, 131.7, 3.8, 3.8, 'DF'); //無
+  
+}
 
 
-
-
-
-
-
-
+//second page
 $tb1 = '
   <p><p>
   <table border="1" cellpadding="2"  align="center" >
@@ -678,17 +670,16 @@ $tb1 = '
   </table>
 ';
 $pdf->writeHTML($tb1,true,false,false,false,'');
+
+//the word behind the table
 $tbl = '
 <font> &emsp;※備註：<br> &emsp;1.</font><font >本表應於提供服務後，</font><font color="red">由提供諮詢服務者自行記錄</font><font size="12">，不得由被服務者記錄填寫。</font><font><br>
  &emsp;2.</font><font >提供諮詢服務前，應先向教職員說明所反應之意見將摘要記錄，並僅作為後續制度或實務改善之參考分析，絕不另作其他用途使用。</font><font><br>
  &emsp;3.</font><font color="red">本表僅諮詢服務對象係依「公立學校教職員退休資遣撫卹條例」辦理退休者適用之。</font><font><br>
  &emsp;4.</font><font color="red">為利後續統計分析用，請勿任意更改本表內容及順序。</font><font><br><br>
- &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;提供諮詢服務者：'.ConvertToUTF8($data["psn_name"]).'</font>
+ &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;提供諮詢服務者： &emsp;'.ConvertToUTF8($data["psn_name"]).'</font>
 ';
 $pdf->writeHTML($tbl, true, false, false, false, '');
-
-
-
 
 ob_end_clean();
 //Close and output PDF document
