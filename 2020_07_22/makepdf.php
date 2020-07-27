@@ -3,6 +3,7 @@
 // Include the main TCPDF library
 require('../.././tcpdf_lib/tcpdf.php'); 
 ob_start();
+//------------------可以把$data array換成資料庫的array--------------------------------------------------------------
 //read the data.csv to test the database
 $filename = 'data.csv';
 $data='';
@@ -15,7 +16,7 @@ if (($h = fopen("{$filename}", "r")) !== FALSE)
       $first_line = $line;
       // $row_num++;
     }
-    else if($row_num==3){
+    else if($row_num==8){
       // $row_num++;
       $data = array_combine($first_line,$line);
       // print_r($data['times_id']);
@@ -24,6 +25,8 @@ if (($h = fopen("{$filename}", "r")) !== FALSE)
     $row_num++;
   }
 }
+//--------------------------------------------------------------------------------------------------------------
+
 //mapping query reference
 $code_list=array(		
   'psn_sex'=>array('0'=>'女','1'=>'男'),
@@ -149,8 +152,8 @@ $pdf->Rect(211.4, 118.4, 3.8, 3.8, 3.5, 'DF'); //退休年資
 $pdf->Rect(238, 118.4, 3.8, 3.8, 3.5, 'DF'); //其他
 //q10
 $pdf->Rect(71.7, 125.3, 3.8, 3.8, 3.5, 'DF'); //退休類型
-$pdf->Rect(159.8, 125.3, 3.8, 3.8, 3.5, 'DF'); //可退休年齡
-$pdf->Rect(211.5, 125.3, 3.8, 3.8, 3.5, 'DF'); //退休年資採計
+$pdf->Rect(160.5, 125.3, 3.8, 3.8, 3.5, 'DF'); //可退休年齡
+$pdf->Rect(212.5, 125.3, 3.8, 3.8, 3.5, 'DF'); //退休年資採計
 $pdf->Rect(71.7, 130.7, 3.8, 3.8, 3.5, 'DF'); //月退休金起支年齡
 $pdf->Rect(160.5, 130.7, 3.8, 3.8, 3.5, 'DF'); //延長服務
 //q11
@@ -168,7 +171,7 @@ $pdf->Rect(71.7, 163.7, 3.8, 3.8, 3.5, 'DF'); //其他
 //q12
 $pdf->Rect(71.7, 170.1, 3.8, 3.8, 3.5, 'DF'); //年資轉銜
 $pdf->Rect(161, 170.1, 3.8, 3.8, 3.5, 'DF'); //離婚配偶請求
-$pdf->Rect(204, 170.1, 3.8, 3.8, 3.5, 'DF'); //免受第37條及第38條限制之條件
+$pdf->Rect(205, 170.1, 3.8, 3.8, 3.5, 'DF'); //免受第37條及第38條限制之條件
 
 //declare other variable
 
@@ -351,10 +354,10 @@ if( $data['q10']=='Y'){
   $pdf->Rect(71.7, 125.3, 3.8, 3.8, 'DF'); //退休類型
 }
 if( $data['q10_1']=='Y'){
-  $pdf->Rect(159.8, 125.3, 3.8, 3.8, 'DF'); //可退休年齡
+  $pdf->Rect(160.5, 125.3, 3.8, 3.8, 'DF'); //可退休年齡
 }
 if( $data['q10_2']=='Y'){
-  $pdf->Rect(211.5, 125.3, 3.8, 3.8, 'DF'); //退休年資採計
+  $pdf->Rect(212.5, 125.3, 3.8, 3.8, 'DF'); //退休年資採計
 }
 if( $data['q10_3']=='Y'){
   $pdf->Rect(71.7, 130.7, 3.8, 3.8, 'DF'); //月退休金起支年齡
@@ -406,7 +409,7 @@ if( $data['q12_1']=='Y'){
   $pdf->Rect(161, 170.1, 3.8, 3.8, 'DF'); //離婚配偶請求
 }
 if( $data['q12_2']=='Y'){
-  $pdf->Rect(204, 170.1, 3.8, 3.8, 'DF'); //免受第37條及第38條限制之條件
+  $pdf->Rect(205, 170.1, 3.8, 3.8, 'DF'); //免受第37條及第38條限制之條件
 }
 
 
@@ -438,7 +441,7 @@ $tb1 = '
     </tr>
     <tr nobr="true">
       <th><font style="text-align:left">身分別（二）</font></th>
-      <th colspan="5"><font style="text-align:left" > &emsp;現職 &emsp;&emsp;&emsp;留停：1.</font><font style="text-align:left;" color="red"> &nbsp;借調( &emsp;民營事業 &ensp;&emsp;財團法人 &emsp;行政法人 &ensp;政府機關(構) &ensp;&emsp;民間 &emsp;其他)</font><font style="text-align:left"><br> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 2. &emsp;育嬰；3. &emsp;侍親；4.
+      <th colspan="5"><font style="text-align:left" > &emsp;現職 &emsp;&emsp;&emsp;留停：1. &emsp;借調( &emsp;民營事業 &ensp;&emsp;財團法人 &emsp;行政法人 &ensp;政府機關(構) &ensp;&emsp;民間 &emsp;其他)<br> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 2. &emsp;育嬰；3. &emsp;侍親；4.
        &emsp; 其他 &emsp;'.ConvertToUTF8($q03_2_other).'</font></th>
     </tr>
     <tr nobr="true">
@@ -469,15 +472,15 @@ $tb1 = '
     </tr>
     <tr nobr="true">
       <th><font style="text-align:left">退休類型及條件</font></th>
-      <th><font style="text-align:left"> &emsp;退休類型（自願、屆齡、命退）&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</font><font style="text-align:left;color:red;">可退休年齡</font><font style="text-align:left;"> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;退休年資採計<br> &emsp;月退休金起支年齡（指標數、展期、減額）&emsp;&emsp;延長服務</font></th>
+      <th><font style="text-align:left"> &emsp;退休類型（自願、屆齡、命退）&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;可退休年齡 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;退休年資採計<br> &emsp;月退休金起支年齡（指標數、展期、減額）&emsp;&emsp;延長服務</font></th>
     </tr>
     <tr nobr="true">
       <th><br><br><br><br><font style="text-align:left">退休給與</font></th>
-      <th><font style="text-align:left"> &emsp;退休金種類（一次、月退、兼領） &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;退休金停領與恢復及剝奪、減少<br> &emsp;退休金計算基準 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;人道關懷條款<br> &emsp;所得替代率 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;最低保障規範<br> &emsp;退休再任 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;退休金發放、查驗<br> &emsp;優惠存款 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</font><font style="text-align:left;color:red;">補償金<br> &emsp;其他 &emsp;'.$q11_other.'</font></th>
+      <th><font style="text-align:left"> &emsp;退休金種類（一次、月退、兼領） &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;退休金停領與恢復及剝奪、減少<br> &emsp;退休金計算基準 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;人道關懷條款<br> &emsp;所得替代率 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;最低保障規範<br> &emsp;退休再任 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;&emsp;退休金發放、查驗<br> &emsp;優惠存款 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;補償金<br> &emsp;其他 &emsp;'.$q11_other.'</font></th>
     </tr>
     <tr nobr="true">
       <th><font style="text-align:left">其他</font></th>
-      <th><font style="text-align:left"> &emsp;年資轉銜（年資併計、年資保留） &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;離婚配偶請求 &emsp;&emsp;&emsp;</font><font style="text-align:left;color:red">免受第37條及第38條限制之條件</font></th>
+      <th><font style="text-align:left"> &emsp;年資轉銜（年資併計、年資保留） &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;離婚配偶請求 &emsp;&emsp;&emsp;&emsp;免受第37條及第38條限制之條件</font></th>
     </tr>
   </table>
 ';
@@ -498,12 +501,12 @@ $pdf->Line(198, 71.7, 220, 71.7);
 $pdf->Line(71, 118, 83, 118);
 $pdf->Line(201, 180, 267, 180);
 $pdf->Line(63.5, 153.7, 115, 153.7);
-$pdf->Line(70, 169.5, 72.8, 169.5);
+$pdf->Line(67, 169.5, 69.8, 169.5);
 
 //draw the rectangle
 //q12 continue
 $pdf->Rect(71.7, 22, 3.8, 3.8, 3.5, 'DF'); //試算退休金
-$pdf->Rect(160.5, 22, 3.8, 3.8, 3.5, 'DF'); //其他
+$pdf->Rect(161.5, 22, 3.8, 3.8, 3.5, 'DF'); //其他
 //q13
 $pdf->Rect(71.7, 28.9, 3.8, 3.8, 3.5, 'DF'); //無
 $pdf->Rect(71.7, 34.2, 3.8, 3.8, 3.5, 'DF'); //有
@@ -539,7 +542,7 @@ if($data['q12_3']=='Y'){
   $pdf->Rect(71.7, 22, 3.8, 3.8, 'DF'); //試算退休金
 }
 if($data['q12_99']=='Y'){
-  $pdf->Rect(160.5, 22, 3.8, 3.8, 'DF'); //其他
+  $pdf->Rect(161.5, 22, 3.8, 3.8, 'DF'); //其他
   $q12_other = ConvertToUTF8($data["q12_other"]);
 }
 //q13
@@ -617,7 +620,10 @@ else{
   $pdf->Rect(71.7, 131.7, 3.8, 3.8, 'DF'); //無
   
 }
-
+//----------------------------需要將名稱換成提供諮詢服務者-------------------------------------------------------------
+//提供諮詢服務者
+$provider_service_name = ConvertToUTF8($data["psn_name"]);
+//------------------------------------------------------------------------------------------
 
 //second page
 $tb1 = '
@@ -626,7 +632,7 @@ $tb1 = '
     <tr nobr="true">
       <th width="7%"></th>
       <th width="13%"></th>
-      <th width="75%"><font style="text-align:left"> &emsp;試算退休金 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;</font><font style="text-align:left;color:red">其他 &emsp;'.$q12_other.'</font></th>
+      <th width="75%"><font style="text-align:left"> &emsp;試算退休金 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&emsp;&emsp;其他 &emsp;'.$q12_other.'</font></th>
     </tr>
     <tr nobr="true">
       <th colspan="2"><font style="text-align:left">對教職員提供退休規畫建議</font></th>
@@ -673,18 +679,17 @@ $pdf->writeHTML($tb1,true,false,false,false,'');
 
 //the word behind the table
 $tbl = '
-<font> &emsp;※備註：<br> &emsp;1.</font>
-<font>本表應於提供服務後，</font>
-<font style="color:red;">由<b>提供諮詢服務者</b>自行記錄</font>
-<font>，不得由被服務者記錄填寫。</font>
-<font><br> &emsp;2.</font>
-<font >提供諮詢服務前，應先向教職員說明所反應之意見將摘要記錄，並僅作為後續制度或實務改善之參考分析，絕不另作其他用途使用。</font>
-<font><br> &emsp;3.</font>
-<font style="color:red;">本表僅諮詢服務對象係依「<b>公立學校教職員退休資遣撫卹條例</b>」辦理退休者適用之。</font>
-<font><br> &emsp;4.</font>
-<font style="color:red;">為利後續統計分析用，請<b>勿</b>任意更改本表內容及順序。</font>
-<font><br><br> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;提供諮詢服務者： &emsp;'.ConvertToUTF8($data["psn_name"]).'</font>
-
+<font> &emsp;※備註：<br> &emsp;1.
+本表應於提供服務後，
+由提供諮詢服務者自行記錄
+，不得由被服務者記錄填寫。
+<br> &emsp;2.
+提供諮詢服務前，應先向教職員說明所反應之意見將摘要記錄，並僅作為後續制度或實務改善之參考分析，絕不另作其他用途使用。
+<br> &emsp;3.
+本表僅諮詢服務對象係依「公立學校教職員退休資遣撫卹條例」辦理退休者適用之。
+<br> &emsp;4.
+為利後續統計分析用，請勿任意更改本表內容及順序。
+<br><br> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;提供諮詢服務者： &emsp;'.$provider_service_name.'</font>
 ';
 
 
